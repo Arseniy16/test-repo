@@ -1,5 +1,5 @@
 #------------------------------
-#This program RPI_GPIO for leds 
+#This program RPI_GPIO is for leds 
 #______________________________  
 
 import RPi.GPIO as GPIO
