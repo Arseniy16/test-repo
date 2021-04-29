@@ -6,6 +6,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+
 num_bits = 8
 
 #Initialization pins in RPi to connect leds
@@ -40,45 +41,41 @@ def decToBinList(decNumber):
     bits.append(decNumber)
     return bits
 
+#Output number in DAC
 def num2dac(value):
     bits = decToBinList(value)
     for i in range (0, num_bits):
         GPIO.output(D[i], bits[num_bits - (i + 1)])
 
-#print('Write samplingFrequency: ')
-samplingFrequency = 20000
-#samplingFrequency = input()
-#print('Write frequency: ')
-frequency = 440
-#frequency = input()
-
-timer = np.arange(0, 20, 1/samplingFrequency)
-
-amplitude = np.sin(timer*2*math.pi)
-
-plt.plot(timer, amplitude)
-plt.title('Sin')
-plt.xlabel('time')
-plt.ylabel('amplitude sin(time)')
-plt.show()
-
-value = 0
+def makesin(timer, freq, samplingFrequency):
+	step = 1 / samplingFrequency
+	npoints = int (timer * samplingFrequency + 0.5)
+	rads = [0 for i in range(npoints)]
+	cords = [0 for i in range(npoints)]
+	times = [0 for i in range(npoints)]
+	for i in range(0, npoints, 1):
+		rads[i] = freq * step * 2*  np.pi * i
+		cords[i] = (int(128 * (math.sin(rads[i]) + 1)))
+		times[i] = step * i
+	plt.plot(times, cords)
+	plt.title('Синусоида')
+	plt.xlabel('Время')
+	plt.ylabel('Значения напряжения')
+	plt.show()
+	return cords
 
 try:
-    for value in timer:
-
-        ampl = math.sin(value)*256
-
-        if(ampl < 0): continue
-
-        bits = num2dac(int(ampl))
-
-        for i in range(num_bits):
-            GPIO.output(D[i], bits[num_bits - (i + 1)])
-        
-        value += 1/samplingFrequency
-        
-        time.sleep(1/samplingFrequency)
+	timer = float(input("Введите время: "))
+	freq = float(input("Введите частоту синусоидального сигнала: "))
+	samplingFrequency = int(input("Введите частоту семплирования: "))
+	samplingPeriod = 1 / samplingFrequency
+	if freq <= 0 or timer <= 0 or samplingFrequency <= 0:
+		print("Вы ввели некорректное число. Производится выход из программы")
+		exit()
+	ndarray = makesin(timer, freq, samplingFrequency)
+	for i in range(0, int(timer * samplingFrequency + 0.5), 1):
+		num2dac(ndarray[i])
+		time.sleep(samplingPeriod)
 
 except Exception:
     print('Total Error...')

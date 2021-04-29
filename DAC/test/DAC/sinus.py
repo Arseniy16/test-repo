@@ -66,12 +66,12 @@ try:
 	if freq <= 0 or time <= 0 or samplingFrequency <= 0:
 		print("Вы ввели некорректное число. Производится выход из программы")
 		exit()
-	ndarray = sin.makesin(time, freq, samplingFrequency)
+	ndarray = makesin(time, freq, samplingFrequency)
 	for i in range(0, int(time * samplingFrequency + 0.5), 1):
-		main.num2dac(ndarray[i])
+		num2dac(ndarray[i])
 		time.sleep(samplingPeriod)
-except Exception:
-	print("Вы ввели некорректный тип данных. Производится выход из программы")
+#except Exception:
+#	print("Вы ввели некорректный тип данных. Производится выход из программы")
 except KeyboardInterrupt:
 	print("\n############################################")
 	print("# Программа была остановлена пользователем #")

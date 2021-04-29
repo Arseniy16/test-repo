@@ -1,3 +1,7 @@
+###############################################
+#------This is the fourth script for DAC------#
+###############################################
+
 from os.path import dirname, join as pjoin
 from scipy.io import wavfile
 import numpy as np
