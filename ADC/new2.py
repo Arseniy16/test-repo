@@ -1,9 +1,41 @@
+###########################################
+#----This is the second script for ADC----#
+###########################################
+
 import RPi.GPIO as GPIO
 import time
 
- 
+
 outstr = "Digital value: {digital}, analog value: {analog} V"
 maxV = 3.3
+
+#Initialization pins in RPi to connect leds
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(10, GPIO.OUT)
+GPIO.setup(9, GPIO.OUT)
+GPIO.setup(11, GPIO.OUT)
+GPIO.setup(5, GPIO.OUT)
+GPIO.setup(6, GPIO.OUT)
+GPIO.setup(13, GPIO.OUT)
+GPIO.setup(19, GPIO.OUT)
+GPIO.setup(26, GPIO.OUT)
+
+GPIO.setup(17, GPIO.OUT)
+
+comp = 4 #comparator
+pot = 17
+
+GPIO.setup(comp, GPIO.IN) 
+
+#This array is for leds(DAC) 
+D = [10, 9, 11, 5, 6, 13, 19, 26]
+
+#All leds are output
+GPIO.output(D[:], 0)
+
+GPIO.output(pot, 1)
+
+#######
 try:
     out_list = (26, 19, 13, 6, 5, 11, 9, 10)
     in_ch = 4

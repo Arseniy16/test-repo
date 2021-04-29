@@ -1,3 +1,7 @@
+###########################################
+#-----This is the third script for ADC----#
+###########################################
+
 import RPi.GPIO as GPIO
 import time
 
@@ -63,3 +67,4 @@ finally:
     GPIO.cleanup (pot)
     GPIO.cleanup (in_ch)
     print('Program is finished!')
+    

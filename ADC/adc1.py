@@ -55,7 +55,7 @@ try:
 
         bits = num2dac(value)
         for i in range(num_bits):
-            GPIO.output(D[i], bits[num_bits - (i + 1)])
+            GPIO.output(D[i], bits[num_bits - (i + 1)])                 
             
 except KeyboardInterrupt:
     print("Stop program by user")

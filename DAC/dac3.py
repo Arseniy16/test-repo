@@ -1,6 +1,6 @@
-#
-#This is the third script for DAC
-#
+###############################################
+#------This is the third script for DAC-------#
+###############################################
 import RPi.GPIO as GPIO
 import time
 import numpy as np

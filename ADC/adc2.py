@@ -20,6 +20,8 @@ GPIO.setup(26, GPIO.OUT)
 GPIO.setup(17, GPIO.OUT)
 
 comp = 4 #comparator
+pot = 17
+
 GPIO.setup(comp, GPIO.IN) 
 
 #This array is for leds(DAC) 
@@ -28,7 +30,8 @@ D = [10, 9, 11, 5, 6, 13, 19, 26]
 #All leds are output
 GPIO.output(D[:], 0)
 
-GPIO.output(17, 1)
+# 
+GPIO.output(pot, 1)
 
 #Converting decimal to binary
 def num2dac(decNumber):

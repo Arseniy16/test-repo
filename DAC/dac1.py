@@ -1,6 +1,6 @@
-#
-#This is the first script for DAC
-#
+###############################################
+#------This is the first script for DAC-------#
+###############################################
 import RPi.GPIO as GPIO
 import time
 
