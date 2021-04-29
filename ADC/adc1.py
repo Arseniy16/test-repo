@@ -1,13 +1,23 @@
-#
-#This is the first script for ADC
-#
+############################################
+#----This is the first script for ADC------#
+############################################
+
 import RPi.GPIO as GPIO
 import time
 
+############################################
+#----------CONST GLOBAL VARIABLES----------#
+############################################
 num_bits = 8
+maxV = 3.3
+############################################
 
+outstr = "{analog} = {voltage} V"
+
+# Reset all firstly
 GPIO.cleanup()
-#Initialization pins in RPi to connect leds
+
+# Initialization pins in RPi to connect leds
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(10, GPIO.OUT)
 GPIO.setup(9, GPIO.OUT)
@@ -20,15 +30,16 @@ GPIO.setup(26, GPIO.OUT)
 
 GPIO.setup(17, GPIO.OUT)
 
-#This array is for leds(DAC) 
+# This array is for leds(DAC) 
 D = [10, 9, 11, 5, 6, 13, 19, 26]
 
-#All leds are output
+# All leds are output
 GPIO.output(D[:], 0)
+
 GPIO.output(17, 1)
 
 #Converting decimal to binary
-def num2dac(decNumber):
+def decToBinList(decNumber):
     decNumber = decNumber % 256
     N = num_bits - 1
     bits = []
@@ -42,27 +53,29 @@ def num2dac(decNumber):
     bits.append(decNumber)
     return bits
 
+def num2dac(value):
+    bits = decToBinList(value)
+    for i in range (0, num_bits):
+        GPIO.output(D[i], bits[num_bits - (i + 1)])
+
 value = 0
 
 try:
     while(value != -1):
-        print('Enter number: ')
+        print('Enter the number (-1 to exit): ')
         value = int(input())
-        number = float(value * 3.3 / 255)
-        print(value , " = ", number, "V")
-        #print('=')
-        #print(number)
+        num2dac(value)  
+        number = float(value * maxV / 255)               
+        print(outstr.format(analog = value, voltage = number))
 
-        bits = num2dac(value)
-        for i in range(num_bits):
-            GPIO.output(D[i], bits[num_bits - (i + 1)])                 
-            
 except KeyboardInterrupt:
     print("Stop program by user")
     GPIO.cleanup()
+
 except ValueError:
     print('Total Error...')
     GPIO.cleanup()
+
 finally:
     print('Program is finished!')
     GPIO.cleanup()
